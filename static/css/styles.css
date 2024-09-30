@@ -1,0 +1,47 @@
+body {
+    background-color: #2e3b4e;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #3b4f6a;
+}
+
+nav ul li {
+    display: inline;
+    padding: 10px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+form {
+    background-color: #3b4f6a;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+button {
+    background-color: #3fbd3e;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}

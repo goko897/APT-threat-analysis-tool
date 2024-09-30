@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APT Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>APT Analysis Results</h1>
+        <p>Status: {{ apt_status }}</p>
+        
+        <h2>Top Suspicious Activities</h2>
+        <ul>
+            {% for ip, activity in analysis.top_suspicious_activities.items() %}
+                <li>{{ ip }}: {{ activity }} bytes</li>
+            {% endfor %}
+        </ul>
+        
+        <h2>Suspicious IPs Isolated</h2>
+        <ul>
+            {% for ip in analysis.suspicious_ips %}
+                <li>{{ ip }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
