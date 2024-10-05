@@ -4,18 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APT Analysis Tool</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='APT-threat-analysis-tool/static/css/styles.css') }}">
+    <style>
+        /* Dracula Dark Theme */
+body {
+    background-color: #282a36;
+    color: #f8f8f2;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  /* Ensure the navbar has enough space below it */
+  .App {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background-color: #44475a;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px; /* Adjust based on navbar height */
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    color: #8be9fd;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  input[type="file"] {
+    margin-bottom: 20px;
+    color: #f8f8f2;
+    background-color: #6272a4;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #50fa7b;
+    color: #282a36;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #ff79c6;
+  }
+  
+  h2 {
+    color: #bd93f9;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  pre {
+    background-color: #44475a;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  pre code {
+    font-size: 14px;
+  }
+  /* Navbar styling */
+.navbar {
+  background-color: #44475a;
+  display: flex;
+  justify-content: space-between; /* Left and right alignment */
+  align-items: center;
+  padding: 10px; /* Add some padding to content */
+  color: #f8f8f2;
+  font-family: 'Arial', sans-serif;
+  position: fixed; /* Stick to the top */
+  top: 0;
+  left: 0; /* Ensure it sticks to the left edge */
+  width: 100%; /* Full width navbar */
+  z-index: 1000; /* Keep on top of other elements */
+  box-sizing: border-box; /* Include padding within the width */
+}
+
+.nav-links {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-right: 20px;
+}
+
+.nav-links a {
+  color: #8be9fd;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  color: #ff79c6;
+}
+
+.time-spent {
+  color: #50fa7b;
+  font-size: 16px;
+  margin-right: 20px; /* Keep the time-spent slightly away from the right edge */
+}
+        </style>
 </head>
 <body>
-    <nav>
-        <ul>
+    <nav class="navbar">
+        <div class="time-spent">Time Spent: 00:00</div> <!-- Placeholder for time tracking -->
+        <ul class="nav-links">
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('index') }}">Upload File</a></li>
             <li><a href="{{ url_for('index') }}">About</a></li>
         </ul>
     </nav>
-    
-    <div class="container">
+    <div class="App">
         <h1>APT Analysis Tool</h1>
         <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
             <label for="file">Upload Network Analysis File:</label>
