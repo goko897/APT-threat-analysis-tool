@@ -1,7 +1,7 @@
 # GenAI- APT analysis tool
 
 We had updated few changes in the file 
-[![Watch the video](https://drive.google.com/file/d/1bSqtSB5TOez6Anm98HvO8xVTVw9_q41D/view?usp=drive_link)]
+https://drive.google.com/file/d/1bSqtSB5TOez6Anm98HvO8xVTVw9_q41D/view?usp=drive_link
 kindly go through this video once
 
 
