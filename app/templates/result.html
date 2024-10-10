@@ -1,29 +1,160 @@
+<!-- result.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APT Analysis Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='APT-threat-analysis-tool/static/css/styles.css') }}">
+    <style>
+        body {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .App {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            background-color: #44475a;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        h1, h2 {
+            color: #bd93f9;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 20px; /* Adds space between the charts */
+        }
+
+        .chart {
+            flex: 1 1 300px; /* Allow the charts to grow and shrink */
+            min-width: 300px; /* Set a minimum width for responsiveness */
+            background-color: #555;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        /* Navbar styling */
+    .navbar {
+    background-color: #44475a;
+    display: flex;
+    justify-content: space-between; /* Left and right alignment */
+    align-items: center;
+    padding: 10px; /* Add some padding to content */
+    color: #f8f8f2;
+    font-family: 'Arial', sans-serif;
+    position: fixed; /* Stick to the top */
+    top: 0;
+    left: 0; /* Ensure it sticks to the left edge */
+    width: 100%; /* Full width navbar */
+    z-index: 1000; /* Keep on top of other elements */
+    box-sizing: border-box; /* Include padding within the width */
+      }
+
+      .nav-links {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+      }
+  
+      .nav-links li {
+    margin-right: 20px;
+      }
+  
+      .nav-links a {
+    color: #8be9fd;
+    text-decoration: none;
+    font-size: 16px;
+      }
+
+      .nav-links a:hover {
+    color: #ff79c6;
+    }
+
+      .time-spent {
+    color: #50fa7b;
+    font-size: 16px;
+    margin-right: 20px; /* Keep the time-spent slightly away from the right edge */
+      </style>
 </head>
 <body>
-    <div class="container">
+    <nav class="navbar">
+        <div class="time-spent">Time Spent: <span id="time-spent">00:00</span></div> <!-- Placeholder for time tracking -->
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('upload_file') }}">Upload File</a></li>
+            <li><a href="{{ url_for('index') }}">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Other content -->
+
+    <script>
+        // Time tracking script
+        let startTime = new Date();  // Capture the start time when the page loads
+
+        function updateTimeSpent() {
+            let currentTime = new Date();
+            let timeSpent = Math.floor((currentTime - startTime) / 1000); // Calculate time difference in seconds
+            let minutes = Math.floor(timeSpent / 60);
+            let seconds = timeSpent % 60;
+
+            // Format the time as MM:SS
+            let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // Update the time spent in the DOM
+            document.getElementById('time-spent').textContent = formattedTime;
+        }
+
+        // Update the time spent every second (1000 milliseconds)
+        setInterval(updateTimeSpent, 1000);
+    </script>
+    <div class="App">
         <h1>APT Analysis Results</h1>
-        <p>Status: {{ apt_status }}</p>
-        
-        <h2>Top Suspicious Activities</h2>
-        <ul>
-            {% for ip, activity in analysis.top_suspicious_activities.items() %}
-                <li>{{ ip }}: {{ activity }} bytes</li>
-            {% endfor %}
-        </ul>
-        
-        <h2>Suspicious IPs Isolated</h2>
-        <ul>
-            {% for ip in analysis.suspicious_ips %}
-                <li>{{ ip }}</li>
-            {% endfor %}
-        </ul>
+        <h2>APT Prediction Status: {{ apt_status }}</h2>
+        <div class="charts-container">
+            <div class="chart">
+                <h2>Attack Distribution</h2>
+                <img src="{{ url_for('static', filename='APT-threat-analysis-tool/static/attack_distribution.png') }}" alt="Attack Distribution">
+            </div>
+            <div class="chart">
+                <h2>Top Source IPs</h2>
+                <img src="{{ url_for('static', filename='top_ips.png') }}" alt="Top IPs by Frequency">
+            </div>
+            <div class="chart">
+                <h2>Flow Duration Distribution</h2>
+                <img src="{{ url_for('static', filename='flow_duration.png') }}" alt="Flow Duration Distribution">
+            </div>
+        </div>
     </div>
 </body>
 </html>
