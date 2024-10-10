@@ -6,8 +6,7 @@
     <title>APT Analysis Tool</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='APT-threat-analysis-tool/static/css/styles.css') }}">
     <style>
-        /* Dracula Dark Theme */
-body {
+    body {
     background-color: #282a36;
     color: #f8f8f2;
     font-family: 'Arial', sans-serif;
@@ -18,14 +17,13 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
+    }
   
-  html, body {
+    html, body {
     height: 100%;
-  }
-  
-  /* Ensure the navbar has enough space below it */
-  .App {
+    }
+
+    .App {
     max-width: 600px;
     width: 100%;
     padding: 20px;
@@ -36,30 +34,30 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 60px; /* Adjust based on navbar height */
-  }
+    }
   
-  form {
+      form {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+      }
   
-  label {
+      label {
     color: #8be9fd;
     font-size: 18px;
     margin-bottom: 10px;
-  }
+      }
   
-  input[type="file"] {
+      input[type="file"] {
     margin-bottom: 20px;
     color: #f8f8f2;
     background-color: #6272a4;
     border: none;
     padding: 10px;
     border-radius: 5px;
-  }
+      }
   
-  button {
+      button {
     background-color: #50fa7b;
     color: #282a36;
     border: none;
@@ -68,32 +66,32 @@ body {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-  }
+      }
   
-  button:hover {
+      button:hover {
     background-color: #ff79c6;
   }
   
-  h2 {
+      h2 {
     color: #bd93f9;
     text-align: center;
     margin-top: 20px;
-  }
+      }
   
-  pre {
+      pre {
     background-color: #44475a;
     color: #f8f8f2;
     padding: 20px;
     border-radius: 10px;
     overflow-x: auto;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  }
+      }
   
-  pre code {
+      pre code {
     font-size: 14px;
-  }
+      }
   /* Navbar styling */
-.navbar {
+    .navbar {
   background-color: #44475a;
   display: flex;
   justify-content: space-between; /* Left and right alignment */
@@ -107,52 +105,84 @@ body {
   width: 100%; /* Full width navbar */
   z-index: 1000; /* Keep on top of other elements */
   box-sizing: border-box; /* Include padding within the width */
-}
+    }
 
-.nav-links {
+    .nav-links {
   list-style-type: none;
   display: flex;
   margin: 0;
   padding: 0;
-}
+    }
 
-.nav-links li {
+    .nav-links li {
   margin-right: 20px;
-}
+    }
 
-.nav-links a {
+    .nav-links a {
   color: #8be9fd;
   text-decoration: none;
   font-size: 16px;
-}
+    }
 
-.nav-links a:hover {
+    .nav-links a:hover {
   color: #ff79c6;
-}
+    }
 
-.time-spent {
+    .time-spent {
   color: #50fa7b;
   font-size: 16px;
   margin-right: 20px; /* Keep the time-spent slightly away from the right edge */
-}
+    }
         </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="time-spent">Time Spent: 00:00</div> <!-- Placeholder for time tracking -->
-        <ul class="nav-links">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('index') }}">Upload File</a></li>
-            <li><a href="{{ url_for('index') }}">About</a></li>
-        </ul>
-    </nav>
+  <nav class="navbar">
+    <div class="time-spent">Time Spent: <span id="time-spent">00:00</span></div> <!-- Placeholder for time tracking -->
+    <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('upload_file') }}">Upload File</a></li>
+        <li><a href="{{ url_for('index') }}">About</a></li>
+    </ul>
+</nav>
+
+<!-- Other content -->
+
+<script>
+    // Time tracking script
+    let startTime = new Date();  // Capture the start time when the page loads
+
+    function updateTimeSpent() {
+        let currentTime = new Date();
+        let timeSpent = Math.floor((currentTime - startTime) / 1000); // Calculate time difference in seconds
+        let minutes = Math.floor(timeSpent / 60);
+        let seconds = timeSpent % 60;
+
+        // Format the time as MM:SS
+        let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        // Update the time spent in the DOM
+        document.getElementById('time-spent').textContent = formattedTime;
+    }
+
+    // Update the time spent every second (1000 milliseconds)
+    setInterval(updateTimeSpent, 1000);
+</script>
     <div class="App">
         <h1>APT Analysis Tool</h1>
         <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
-            <label for="file">Upload Network Analysis File:</label>
-            <input type="file" name="file" id="file">
-            <button type="submit">Analyze</button>
-        </form>
+          <label for="file">Upload CSV File:</label>
+          <input type="file" name="file" accept=".csv">
+          <button type="submit">Upload</button>
+      </form>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     </div>
 </body>
 </html>
